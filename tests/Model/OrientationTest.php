@@ -9,11 +9,11 @@ class OrientationTest extends TestCase
 {
     public function testOrientation(): void
     {
-        $oh = Orientation::fromHorizontal();
+        $oh = Orientation::horizontal();
         self::assertTrue($oh->isHorizontal());
         self::assertFalse($oh->isVertical());
 
-        $ov = Orientation::fromVertical();
+        $ov = Orientation::vertical();
         self::assertTrue($ov->isVertical());
         self::assertFalse($ov->isHorizontal());
 

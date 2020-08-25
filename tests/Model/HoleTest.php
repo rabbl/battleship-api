@@ -6,6 +6,7 @@ namespace App\Tests\Model;
 
 use App\Exception\InvalidHoleArgumentException;
 use App\Model\Hole;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class HoleTest extends TestCase
@@ -84,5 +85,14 @@ class HoleTest extends TestCase
     public function testNumberToLetterReturnsCorrectResult(string $letter, int $expectedNumber): void
     {
         self::assertEquals($expectedNumber, Hole::convertLetterToNumber($letter));
+    }
+
+    /**
+     * @throws Exception
+     * @noinspection UnnecessaryAssertionInspection
+     */
+    public function testItCreatesRandomHoles(): void
+    {
+        self::assertInstanceOf(Hole::class, Hole::createRandom());
     }
 }

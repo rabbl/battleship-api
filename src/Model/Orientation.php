@@ -11,12 +11,12 @@ class Orientation
     /** @var bool */
     private $isHorizontal;
 
-    public static function fromHorizontal(): Orientation
+    public static function horizontal(): Orientation
     {
         return new self(true);
     }
 
-    public static function fromVertical(): Orientation
+    public static function vertical(): Orientation
     {
         return new self(false);
     }
@@ -36,7 +36,7 @@ class Orientation
         return !$this->isHorizontal;
     }
 
-    public function equals(self $orientation)
+    public function equals(self $orientation): bool
     {
         return $this->isHorizontal() === $orientation->isHorizontal();
     }
