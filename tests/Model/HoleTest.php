@@ -95,4 +95,14 @@ class HoleTest extends TestCase
     {
         self::assertInstanceOf(Hole::class, Hole::createRandom());
     }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateFromArrayToArray(): void
+    {
+        $hole = Hole::createRandom();
+        self::assertEquals([$hole->letter(), $hole->number()], $hole->toArray());
+        self::assertEquals($hole, Hole::createFromArray($hole->toArray()));
+    }
 }

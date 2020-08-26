@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Model;
 
 use App\Exception\InvalidOrientationArgumentException;
 use App\Model\Orientation;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class OrientationTest extends TestCase
@@ -49,5 +52,14 @@ class OrientationTest extends TestCase
         self::assertEquals($isHorizontal, $o->isHorizontal());
         self::assertEquals($isVertical, $o->isVertical());
         self::assertEquals($orientation, $o->toInt());
+    }
+
+    /**
+     * @throws Exception
+     * @noinspection UnnecessaryAssertionInspection
+     */
+    public function testCreateRandom(): void
+    {
+        self::assertInstanceOf(Orientation::class, Orientation::createRandom());
     }
 }

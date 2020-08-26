@@ -8,7 +8,9 @@ use App\Exception\AllShipsAreNotPlacedException;
 use App\Exception\OutOfBoundsException;
 use App\Exception\ShipOverlapsWithAnotherShipException;
 use App\Exception\ShipTypeAlreadyPlacedException;
+use App\Model\Ship\PlacedShip;
 use App\Model\Ship\Ship;
+use App\Model\Ship\ShipInterface;
 
 /**
  * Inspired from https://github.com/restgames/battleship-php
@@ -94,7 +96,7 @@ class Grid
             }
 
             $grid->grid[$x][$y] = $ship->id();
-            $grid->ships[$shipId] = $ship;
+            $grid->ships[$shipId] = new PlacedShip($ship, $hole, $orientation);
         }
 
         return $grid;
@@ -102,20 +104,21 @@ class Grid
 
     public function areAllShipsPlaced(): bool
     {
-        return count($this->ships()) === self::NUMBER_OF_SHIPS;
+        return count($this->placedShips()) === self::NUMBER_OF_SHIPS;
     }
 
     public function areAllShipsSunk(): bool
     {
         $allShipsAreSunk = true;
-        foreach ($this->ships as $ship) {
-            $allShipsAreSunk = $allShipsAreSunk && $this->isShipSunk($ship);
+        foreach ($this->ships as $locatedShip) {
+
+            $allShipsAreSunk = $allShipsAreSunk && $this->isShipSunk($locatedShip);
         }
 
         return $allShipsAreSunk;
     }
 
-    private function isShipSunk(Ship $ship): bool
+    private function isShipSunk(ShipInterface $ship): bool
     {
         $size = $ship->size();
         $count = 0;
@@ -131,7 +134,7 @@ class Grid
         return $count === $size;
     }
 
-    public function shot(Hole $hole): array
+    public function shot(Hole $hole): ShotResult
     {
         if (!$this->areAllShipsPlaced()) {
             throw new AllShipsAreNotPlacedException('All ships must be placed before shooting');
@@ -144,13 +147,13 @@ class Grid
             $this->grid[$y][$x] = -abs($this->grid[$y][$x]);
 
             if ($this->isShipSunk($this->ships[abs($shipId)])) {
-                return [self::SUNK, $shipId];
+                return new ShotResult($hole, self::SUNK, $shipId);
             }
 
-            return [self::HIT, $shipId];
+            return new ShotResult($hole, self::HIT, $shipId);
         }
 
-        return [self::WATER, 0];
+        return new ShotResult($hole, self::WATER);
     }
 
     public function grid(): array
@@ -158,7 +161,10 @@ class Grid
         return $this->grid;
     }
 
-    public function ships(): array
+    /**
+     * @return PlacedShip[]
+     */
+    public function placedShips(): array
     {
         return $this->ships;
     }

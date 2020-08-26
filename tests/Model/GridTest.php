@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Model;
 
 use App\Exception\AllShipsAreNotPlacedException;
@@ -15,6 +17,7 @@ use App\Model\Ship\Cruiser;
 use App\Model\Ship\Destroyer;
 use App\Model\Ship\Ship;
 use App\Model\Ship\Submarine;
+use App\Model\ShotResult;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -41,7 +44,7 @@ class GridTest extends TestCase
         );
 
         self::assertEquals($expectedGrid, $grid->grid());
-        self::assertEquals([], $grid->ships());
+        self::assertEquals([], $grid->placedShips());
     }
 
     public function testPlaceShipsHorizontally(): void
@@ -66,7 +69,7 @@ class GridTest extends TestCase
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ], $grid->grid());
-        self::assertCount(5, $grid->ships());
+        self::assertCount(5, $grid->placedShips());
         self::assertTrue($grid->areAllShipsPlaced());
     }
 
@@ -90,7 +93,7 @@ class GridTest extends TestCase
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ], $grid->grid());
-        self::assertCount(5, $grid->ships());
+        self::assertCount(5, $grid->placedShips());
     }
 
     public function testWhenSameShipPlacedTwiceItThrowsException(): void
@@ -162,9 +165,14 @@ class GridTest extends TestCase
             ->placeShip(new Destroyer(), Hole::createFromLetterAndNumber('E', 1), Orientation::horizontal());
 
 
-        self::assertEquals([Grid::WATER, 0], $grid->shot(Hole::createFromLetterAndNumber('E', 10)));
-        self::assertEquals([Grid::HIT, Destroyer::ID], $grid->shot(Hole::createFromLetterAndNumber('E', 1)));
-        self::assertEquals([Grid::SUNK, Destroyer::ID], $grid->shot(Hole::createFromLetterAndNumber('E', 2)));
+        $hole = Hole::createFromLetterAndNumber('E', 10);
+        self::assertEquals(new ShotResult($hole, Grid::WATER), $grid->shot($hole));
+
+        $hole = Hole::createFromLetterAndNumber('E', 1);
+        self::assertEquals(new ShotResult($hole, Grid::HIT, Destroyer::ID), $grid->shot($hole));
+
+        $hole = Hole::createFromLetterAndNumber('E', 2);
+        self::assertEquals(new ShotResult($hole, Grid::SUNK, Destroyer::ID), $grid->shot($hole));
     }
 
     public function testMakeSinkAllShips(): void
@@ -177,7 +185,7 @@ class GridTest extends TestCase
             ->placeShip(new Submarine(), Hole::createFromLetterAndNumber('D', 1), Orientation::horizontal())
             ->placeShip(new Destroyer(), Hole::createFromLetterAndNumber('E', 1), Orientation::horizontal());
 
-        $shots = [
+        $holesToShotWithResults = [
             [Hole::createFromLetterAndNumber('A', 1), [Grid::HIT, Carrier::ID]],
             [Hole::createFromLetterAndNumber('A', 2), [Grid::HIT, Carrier::ID]],
             [Hole::createFromLetterAndNumber('A', 3), [Grid::HIT, Carrier::ID]],
@@ -197,9 +205,9 @@ class GridTest extends TestCase
             [Hole::createFromLetterAndNumber('E', 2), [Grid::SUNK, Destroyer::ID]]
         ];
 
-        foreach ($shots as $key => $shot) {
-            self::assertEquals($shot[1], $grid->shot($shot[0]));
-            if ($key < count($shots) - 1) {
+        foreach ($holesToShotWithResults as $key => $holeWithResult) {
+            self::assertEquals(new ShotResult($holeWithResult[0], $holeWithResult[1][0], $holeWithResult[1][1]), $grid->shot($holeWithResult[0]));
+            if ($key < count($holesToShotWithResults) - 1) {
                 self::assertFalse($grid->areAllShipsSunk());
             }
         }

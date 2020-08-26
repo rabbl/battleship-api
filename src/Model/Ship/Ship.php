@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Ship;
 
-abstract class Ship
+abstract class Ship implements ShipInterface
 {
     public function size(): int
     {

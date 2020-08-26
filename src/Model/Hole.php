@@ -32,6 +32,11 @@ class Hole
         return new self($letter, $number);
     }
 
+    public static function createFromArray(array $arr): Hole
+    {
+        return self::createFromLetterAndNumber($arr[0], $arr[1]);
+    }
+
     /**
      * @return Hole
      * @throws Exception
@@ -73,5 +78,10 @@ class Hole
     public static function convertNumberToLetter(int $number): string
     {
         return chr(ord(Grid::START_LETTER) + $number - 1);
+    }
+
+    public function toArray(): array
+    {
+        return [$this->letter(), $this->number()];
     }
 }

@@ -6,10 +6,10 @@ namespace App\Model;
 
 
 use App\Exception\InvalidOrientationArgumentException;
+use Exception;
 
 class Orientation
 {
-
     private const HORIZONTAL = 0;
     private const VERTICAL = 1;
 
@@ -23,6 +23,15 @@ class Orientation
     public static function vertical(): Orientation
     {
         return new self(self::VERTICAL);
+    }
+
+    /**
+     * @return Orientation
+     * @throws Exception
+     */
+    public static function createRandom(): Orientation
+    {
+        return self::fromInt(random_int(0, 1));
     }
 
     public static function fromInt(int $orientation): Orientation
