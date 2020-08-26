@@ -38,7 +38,7 @@ class PlayerTest extends TestCase
         self::assertCount(6, $player->placedShots());
 
         $shot = new Shot(Hole::createRandom());
-        $player->addShot($shot);
+        $player->addPlacedShot($shot);
         self::assertCount(7, $player->placedShots());
         self::assertEquals($shot, $player->placedShots()[6]);
     }

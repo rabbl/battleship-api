@@ -67,7 +67,7 @@ class Player
         return $this->placedShots;
     }
 
-    public function addShot(Shot $shot): self
+    public function addPlacedShot(Shot $shot): self
     {
         $this->placedShots[] = $shot;
         return $this;
