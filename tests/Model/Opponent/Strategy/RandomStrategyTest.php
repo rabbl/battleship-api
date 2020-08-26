@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Model\Opponent\Strategy;
 
-use App\Model\Opponent\Strategy\RandomStrategy;
+use App\Model\Strategy\RandomStrategy;
 use Exception;
 use PHPUnit\Framework\TestCase;
 

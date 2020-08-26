@@ -56,7 +56,7 @@ class Game
         $this->updatedAt = new DateTime();
     }
 
-    public function getId(): UuidInterface
+    public function id(): UuidInterface
     {
         return $this->id;
     }

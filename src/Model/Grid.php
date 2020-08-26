@@ -168,4 +168,16 @@ class Grid
     {
         return $this->ships;
     }
+
+    public function render(): string
+    {
+        $out = '';
+        foreach ($this->grid as $letter => $letterValue) {
+            for ($number = 0, $numberMax = count($letterValue); $number < $numberMax; ++$number) {
+                $out .= $this->grid[$letter][$number];
+            }
+        }
+
+        return $out;
+    }
 }

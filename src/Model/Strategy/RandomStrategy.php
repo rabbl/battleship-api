@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Opponent\Strategy;
+namespace App\Model\Strategy;
 
 use App\Exception\OutOfBoundsException;
 use App\Exception\ShipOverlapsWithAnotherShipException;
@@ -20,6 +20,8 @@ use Exception;
 
 class RandomStrategy implements StrategyInterface
 {
+    public const ID = 1;
+
     /**
      * @return Grid
      * @throws Exception

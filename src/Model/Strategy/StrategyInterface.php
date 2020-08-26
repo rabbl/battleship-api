@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Opponent\Strategy;
+namespace App\Model\Strategy;
 
 use App\Model\ShotsCollection;
 use App\Model\Grid;

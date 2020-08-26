@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-class ShotResult extends Shot
+use JsonSerializable;
+
+class ShotResult extends Shot implements JsonSerializable
 {
     protected $hole;
     private $result;
@@ -30,5 +32,15 @@ class ShotResult extends Shot
     public function shipId(): int
     {
         return $this->shipId;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'letter' => $this->hole()->letter(),
+            'number' => $this->hole()->number(),
+            'result' => $this->result(),
+            'shipId' => $this->shipId()
+        ];
     }
 }

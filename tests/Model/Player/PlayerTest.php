@@ -3,7 +3,7 @@
 namespace App\Tests\Model\Player;
 
 use App\Model\Hole;
-use App\Model\Opponent\Strategy\RandomStrategy;
+use App\Model\Strategy\RandomStrategy;
 use App\Model\Player\Player;
 use App\Model\Shot;
 use Exception;

@@ -30,4 +30,9 @@ class Shot
             'hole' => $this->hole()->toArray()
         ];
     }
+
+    public function equals(Shot $other): bool
+    {
+        return $this->hole->number() === $other->hole->number() && $this->hole()->letter() === $other->hole()->letter();
+    }
 }

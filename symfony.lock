@@ -96,6 +96,9 @@
     "php": {
         "version": "7.4"
     },
+    "phplang/scope-exit": {
+        "version": "1.0.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -110,6 +113,12 @@
     },
     "roave/security-advisories": {
         "version": "dev-master"
+    },
+    "swaggest/json-diff": {
+        "version": "v3.7.5"
+    },
+    "swaggest/json-schema": {
+        "version": "v0.12.29"
     },
     "symfony/browser-kit": {
         "version": "v5.1.3"

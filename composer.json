@@ -11,6 +11,7 @@
     "doctrine/doctrine-migrations-bundle": "^3.0",
     "doctrine/orm": "^2.7",
     "ramsey/uuid-doctrine": "^1.6",
+    "swaggest/json-schema": "^0.12.29",
     "symfony/browser-kit": "5.1.*",
     "symfony/console": "5.1.*",
     "symfony/css-selector": "5.1.*",

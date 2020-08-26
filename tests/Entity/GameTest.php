@@ -3,7 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Game;
-use App\Model\Opponent\Strategy\RandomStrategy;
+use App\Model\Strategy\RandomStrategy;
 use App\Model\Player\Player;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -45,7 +45,7 @@ class GameTest extends KernelTestCase
         $game = Game::createNew($id, $human, $computer);
         self::assertInstanceOf(Game::class, $game);
 
-        self::assertEquals($id, $game->getId());
+        self::assertEquals($id, $game->id());
         self::assertEquals($human->toArray(), $game->human()->toArray());
         self::assertEquals($computer->toArray(), $game->computer()->toArray());
         self::assertInstanceOf(DateTime::class, $game->createdAt());
