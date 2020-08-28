@@ -134,6 +134,16 @@ class Grid
         return $count === $size;
     }
 
+    public function placePreviousShots(ShotsCollection $shots): Grid
+    {
+        /** @var Shot $shot */
+        foreach ($shots as $shot) {
+            $this->shot($shot->hole());
+        }
+
+        return $this;
+    }
+
     public function shot(Hole $hole): ShotResult
     {
         if (!$this->areAllShipsPlaced()) {

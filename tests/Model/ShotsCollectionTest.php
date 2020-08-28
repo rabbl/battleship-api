@@ -25,7 +25,7 @@ class ShotsCollectionTest extends TestCase
         $shipId = Destroyer::ID;
         $shot = new ShotResult($hole, $result, $shipId);
 
-        $csc = new ShotsCollection();
+        $csc = ShotsCollection::create();
         $csc->add($shot);
 
         self::assertEquals([$shot], $csc->items());
