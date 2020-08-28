@@ -114,11 +114,11 @@ class GameStatusResponse implements JsonSerializable
             $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
         }
 
-        $humanPoints = 0;
         foreach ($human->placedShots() as $shot) {
-            $shotResult = $grid->shot($shot->hole());
-            $humanPoints += $shotResult->result();
+            $grid->shot($shot->hole());
         }
+
+        $humanScore = $grid->calculateOpponentsScore();
 
         if ($grid->areAllShipsSunk()) {
             $message = sprintf("The winner is the human! Good game %s!", $human->name());
@@ -129,19 +129,19 @@ class GameStatusResponse implements JsonSerializable
             $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
         }
 
-        $computerPoints = 0;
         foreach ($computer->placedShots() as $shot) {
-            $shotResult = $grid->shot($shot->hole());
-            $computerPoints += $shotResult->result();
+            $grid->shot($shot->hole());
         }
+
+        $computerScore = $grid->calculateOpponentsScore();
 
         if ($grid->areAllShipsSunk()) {
             $message = sprintf("The winner is the machine! You loose %s!", $human->name());
         }
 
         return [
-            'human' => $humanPoints,
-            'computer' => $computerPoints,
+            'human' => $humanScore,
+            'computer' => $computerScore,
             'message' => $message
         ];
     }
@@ -151,7 +151,6 @@ class GameStatusResponse implements JsonSerializable
         return [
             'id' => $this->game->id()->toString(),
             'human' => $this->game->human()->toArray(),
-            'computer' => $this->game->computer()->toArray(), // Todo, remove this line
             'oceanView' => $this->renderOceanView(),
             'targetView' => $this->renderTargetView(),
             'score' => $this->calculateScores()

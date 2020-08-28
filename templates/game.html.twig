@@ -93,5 +93,15 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <h3>Scores</h3>
+    {% set scores = gameStatus.calculateScores%}
+    <ul>
+        <li>Human: {{ scores['human']}} </li>
+        <li>Computer: {{ scores['computer']}}</li>
+    </ul>
+
+    <p>{{ scores['message'] }}</p>
+
 {% endblock %}
 

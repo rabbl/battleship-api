@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Exception\AllShipsAreNotPlacedException;
+use App\Exception\AllShipsAreSunkedException;
 use App\Exception\OutOfBoundsException;
 use App\Exception\ShipOverlapsWithAnotherShipException;
 use App\Exception\ShipTypeAlreadyPlacedException;
@@ -134,20 +135,22 @@ class Grid
         return $count === $size;
     }
 
-    public function placePreviousShots(ShotsCollection $shots): Grid
+    public function placePreviousShots(ShotsCollection $shots): void
     {
         /** @var Shot $shot */
         foreach ($shots as $shot) {
             $this->shot($shot->hole());
         }
-
-        return $this;
     }
 
     public function shot(Hole $hole): ShotResult
     {
         if (!$this->areAllShipsPlaced()) {
             throw new AllShipsAreNotPlacedException('All ships must be placed before shooting');
+        }
+
+        if ($this->areAllShipsSunk()) {
+            throw new AllShipsAreSunkedException('All ships already gone. Game is over.');
         }
 
         $y = Hole::convertLetterToNumber($hole->letter()) - 1;
@@ -169,6 +172,32 @@ class Grid
     public function grid(): array
     {
         return $this->grid;
+    }
+
+    /**
+     * 1 Points for each hit
+     * 2 Points for each sunk
+     *
+     * @return int
+     */
+    public function calculateOpponentsScore(): int
+    {
+        $score = 0;
+        foreach ($this->grid as $y => $letter) {
+            foreach ($letter as $x => $number) {
+                if ($this->grid[$y][$x] < 0) {
+                    ++$score;
+                }
+            }
+        }
+
+        foreach ($this->ships as $locatedShip) {
+            if ($this->isShipSunk($locatedShip)) {
+                $score += 2;
+            }
+        }
+
+        return $score;
     }
 
     /**

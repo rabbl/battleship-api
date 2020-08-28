@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\AllShipsAreSunkedException;
 use App\Infrastructure\Request\PlaceShotRequest;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -31,8 +32,12 @@ final class PlaceShotController extends AbstractCommandController
         $content = json_decode($request->getContent(), true);
         $placeShotRequest = PlaceShotRequest::fromValidatedContent($content);
 
-        $this->gameMaster->humanPlacesShot(Uuid::fromString($id), $placeShotRequest->shot());
-        $this->gameMaster->computerPlacesShot(Uuid::fromString($id));
+        try {
+            $this->gameMaster->humanPlacesShot(Uuid::fromString($id), $placeShotRequest->shot());
+            $this->gameMaster->computerPlacesShot(Uuid::fromString($id));
+        } catch (AllShipsAreSunkedException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_FORBIDDEN);
+        }
 
         return new Response(null, Response::HTTP_CREATED);
     }

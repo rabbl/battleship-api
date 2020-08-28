@@ -27,7 +27,9 @@ class GameDebugResponse implements JsonSerializable
             $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
         }
 
-        $grid->placePreviousShots(ShotsCollection::fromArray($shots));
+        foreach ($shots as $shot) {
+            $grid->shot($shot->hole());
+        }
 
         return $grid;
     }
