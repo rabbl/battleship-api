@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Infrastructure\Response\GameDebugResponse;
 use App\Infrastructure\Response\GameStatusResponse;
 use App\Infrastructure\Response\ShotStatusResponse;
 use App\Model\Hole;
@@ -54,5 +55,20 @@ final class GameStatusController extends AbstractQueryController
         $shotStatusResponse = new ShotStatusResponse($game, new Shot(Hole::createFromLetterAndNumber($letter, (int)$number)));
 
         return new JsonResponse($shotStatusResponse, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/{id}/debug", methods={"GET"})
+     * @param string $id
+     * @return Response
+     */
+    public function gameDebug(string $id): Response
+    {
+        $game = $this->gameMaster->loadGame(Uuid::fromString($id));
+        if (!$game instanceof Game) {
+            return new JsonResponse(['message' => 'Not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return new JsonResponse(new GameDebugResponse($game), Response::HTTP_OK);
     }
 }

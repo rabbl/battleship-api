@@ -85,4 +85,9 @@ class GameStatusControllerTest extends WebTestCase
             ], $content);
         }
     }
+
+    /*
+        TODO
+        Add tests for GameStatus and Debug-Mode
+    */
 }

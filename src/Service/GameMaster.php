@@ -120,7 +120,7 @@ class GameMaster
         }
 
         $strategy = $computer->strategy();
-        $shots = new ShotsCollection();
+        $shots = ShotsCollection::fromArray([]);
         foreach ($computer->placedShots() as $shot) {
             $shots->add($shot);
         }
