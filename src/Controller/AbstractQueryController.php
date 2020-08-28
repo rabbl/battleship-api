@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Exception\InvalidJsonException;
 use App\Service\GameMaster;
-use Swaggest\JsonSchema\Exception as SwaggestException;
-use Swaggest\JsonSchema\InvalidValue;
-use Swaggest\JsonSchema\Schema;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
-abstract class AbstractQueryController
+abstract class AbstractQueryController extends AbstractController
 {
     /** @var GameMaster $gameMaster */
     protected $gameMaster;

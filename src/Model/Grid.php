@@ -157,10 +157,10 @@ class Grid
             $this->grid[$y][$x] = -abs($this->grid[$y][$x]);
 
             if ($this->isShipSunk($this->ships[abs($shipId)])) {
-                return new ShotResult($hole, self::SUNK, $shipId);
+                return new ShotResult($hole, self::SUNK, abs($shipId));
             }
 
-            return new ShotResult($hole, self::HIT, $shipId);
+            return new ShotResult($hole, self::HIT, abs($shipId));
         }
 
         return new ShotResult($hole, self::WATER);

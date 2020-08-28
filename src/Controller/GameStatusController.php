@@ -8,6 +8,7 @@ use App\Entity\Game;
 use App\Infrastructure\Response\GameDebugResponse;
 use App\Infrastructure\Response\GameStatusResponse;
 use App\Infrastructure\Response\ShotStatusResponse;
+use App\Model\Grid;
 use App\Model\Hole;
 use App\Model\Shot;
 use Ramsey\Uuid\Uuid;
@@ -35,7 +36,12 @@ final class GameStatusController extends AbstractQueryController
             return new JsonResponse(new GameStatusResponse($game), Response::HTTP_OK);
         }
 
-        return new Response('HTML', 200);
+        return $this->render('game.html.twig', [
+            'game' => $game,
+            'gameStatus' => new GameStatusResponse($game),
+            'letters' => Grid::letters(),
+            'numbers' => Grid::numbers()
+        ]);
     }
 
     /**

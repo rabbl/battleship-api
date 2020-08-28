@@ -51,6 +51,15 @@ class GameStatusResponse implements JsonSerializable
 
     /**
      * Renders a 2D-map with shots done and result.
+     * Values are:
+     *
+     * Examples:
+     *
+     * NULL: for unknown
+     * [0, 0]: for water
+     * [1, 2]: for hit ship with id 2
+     * [2, 2]: for sink ship with id 2
+     *
      * @return array
      */
     public function renderTargetView(): array
@@ -99,7 +108,7 @@ class GameStatusResponse implements JsonSerializable
         }
 
         if ($grid->areAllShipsSunk()) {
-            $message = sprintf("The is the human! Good game %s!", $human->name());
+            $message = sprintf("The winner is the human! Good game %s!", $human->name());
         }
 
         $grid = new Grid();

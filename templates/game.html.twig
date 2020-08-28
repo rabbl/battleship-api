@@ -1,0 +1,91 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Battleship{% endblock %}
+
+{% block stylesheets %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <h1>Battleship!</h1>
+    <h2>GameID: {{ game.id }}</h2>
+    <h3>Target View</h3>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            {% for number in numbers %}
+                <th>{{ number }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for letter in letters %}
+            {% set letter_count = loop.index0 %}
+            <tr>
+                <td>{{ letter }}</td>
+                {% for number in numbers %}
+                    {% set number_count = loop.index0 %}
+                    {% set targetViewValue = gameStatus.renderTargetView[letter_count][number_count] %}
+                    {% if targetViewValue is null %}
+                        <td onclick="$.ajax({
+                                url:'/{{ game.id }}/shot',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json; charset=utf-8'},
+                                data: JSON.stringify({number: {{ number }}, letter: '{{ letter }}'}),
+                                dataType:'json'
+                                }).always(function (data) {window.location.reload()})">
+                            ---
+                        </td>
+                    {% elseif targetViewValue[0] == 0 %}
+                        <td>
+                            {{ 0 }}
+                        </td>
+                    {% elseif targetViewValue[0] == 1 %}
+                        <td bgcolor="red">
+                            {{ targetViewValue[1] }}
+                        </td>
+                    {% else %}
+                        <td bgcolor="gray">
+                            {{ targetViewValue[1] }}
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Ocean View</h3>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            {% for number in numbers %}
+                <th>{{ number }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for letter in letters %}
+            <tr>
+                <td>{{ letter }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            function makeShot(letter, number) {
+                alert('TEST');
+                $.post('/', {
+                    letter: letter,
+                    number: number
+                });
+            }
+        })
+    </script>
+{% endblock %}
