@@ -2,8 +2,64 @@
 
 {% block title %}Battleship{% endblock %}
 
+{% block stylesheets %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function generateUUID() { // Public Domain/MIT
+                var d = new Date().getTime();//Timestamp
+                var d2 = (performance && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16;//random number between 0 and 16
+                    if (d > 0) {//Use timestamp until depleted
+                        r = (d + r) % 16 | 0;
+                        d = Math.floor(d / 16);
+                    } else {//Use microseconds since page-load if supported
+                        r = (d2 + r) % 16 | 0;
+                        d2 = Math.floor(d2 / 16);
+                    }
+                    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                });
+            }
+
+            $("#submit-button").click(
+                function () {
+                    id = generateUUID();
+                    $.ajax({
+                        url: '/',
+                        type: 'POST',
+                        headers: {'Content-Type': 'application/json; charset=utf-8'},
+                        data: JSON.stringify({
+                            id: id,
+                            name: $('#name').val(),
+                            strategy: parseInt($('#strategy-select').val(), 10)
+                        }),
+                        dataType: 'json'
+                    }).always(function (data) {
+                        if (data.status === 201) {
+                            window.location.href = '/' + id
+                        }
+                    })
+                }
+            )
+        })
+    </script>
+{% endblock %}
+
 {% block body %}
     <h1>Battleship</h1>
-    <p>Press button to start a game.</p>
-    <button type="button">Start Game!</button>
+    <form action="{{ path('home') }}" method="post" name="form" id="form">
+        <p><label for="name">Name: </label><input type="text" name="name" id="name"></p>
+        <p>
+            <label for="strategy-select">Choose a strategy:</label>
+            <select name="strategy" id="strategy-select">
+                <option value="1">Fully random</option>
+            </select>
+        </p>
+        <p>Press button to start a game.</p>
+        <button type="button" id="submit-button">
+            Start Game!
+        </button>
+    </form>
+
 {% endblock %}

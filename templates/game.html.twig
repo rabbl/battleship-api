@@ -10,6 +10,8 @@
     <h1>Battleship!</h1>
     <h2>GameID: {{ game.id }}</h2>
     <h3>Target View</h3>
+
+    {% set targetView = gameStatus.renderTargetView %}
     <table border="1">
         <thead>
         <tr>
@@ -26,7 +28,7 @@
                 <td>{{ letter }}</td>
                 {% for number in numbers %}
                     {% set number_count = loop.index0 %}
-                    {% set targetViewValue = gameStatus.renderTargetView[letter_count][number_count] %}
+                    {% set targetViewValue = targetView[letter_count][number_count] %}
                     {% if targetViewValue is null %}
                         <td onclick="$.ajax({
                                 url:'/{{ game.id }}/shot',
@@ -34,7 +36,7 @@
                                 headers: {'Content-Type': 'application/json; charset=utf-8'},
                                 data: JSON.stringify({number: {{ number }}, letter: '{{ letter }}'}),
                                 dataType:'json'
-                                }).always(function (data) {window.location.reload()})">
+                                }).always(function () {window.location.reload()})">
                             ---
                         </td>
                     {% elseif targetViewValue[0] == 0 %}
@@ -57,35 +59,37 @@
     </table>
 
     <h3>Ocean View</h3>
+
+    {% set oceanView = gameStatus.renderOceanView %}
     <table border="1">
         <thead>
         <tr>
             <th>&nbsp;</th>
             {% for number in numbers %}
+                {% set number_count = loop.index0 %}
                 <th>{{ number }}</th>
             {% endfor %}
         </tr>
         </thead>
         <tbody>
         {% for letter in letters %}
+            {% set letter_count = loop.index0 %}
             <tr>
                 <td>{{ letter }}</td>
+                {% for number in numbers %}
+                    {% set number_count = loop.index0 %}
+                    {% set oceanViewValue = oceanView[letter_count][number_count] %}
+                    {% if oceanViewValue[1] == 0 and oceanViewValue[1] == 0 %}
+                        <td>{{ oceanViewValue[0] }}</td>
+                    {% elseif oceanViewValue[0] == 0 and oceanViewValue[1] == 1 %}
+                        <td bgcolor="gray">{{ oceanViewValue[0] }}</td>
+                    {% elseif oceanViewValue[0] > 0 and oceanViewValue[1] == 1 %}
+                        <td bgcolor="red">{{ oceanViewValue[0] }}</td>
+                    {% endif %}
+                {% endfor %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
 {% endblock %}
 
-{% block javascripts %}
-    <script>
-        $(document).ready(function () {
-            function makeShot(letter, number) {
-                alert('TEST');
-                $.post('/', {
-                    letter: letter,
-                    number: number
-                });
-            }
-        })
-    </script>
-{% endblock %}

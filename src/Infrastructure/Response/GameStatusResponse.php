@@ -20,6 +20,19 @@ class GameStatusResponse implements JsonSerializable
 
     /**
      * Renders a map with own ships placed and the shots from opponent.
+     *
+     * For each field in the map returns an array with two integers.
+     *
+     * Example: [2, 1]
+     *
+     * First number is the shipId or 0 for water
+     * Second is the shot flag, 0 for no shot, 1 for shot
+     *
+     * Examples:
+     *
+     * [0, 0]: Water with no shot
+     * [1, 0]: Ship with id 1 and no shot from opponent
+     * [2, 1]: Ship with id 2 anf shot from opponent
      * @return array
      */
     public function renderOceanView(): array
@@ -50,7 +63,7 @@ class GameStatusResponse implements JsonSerializable
     }
 
     /**
-     * Renders a 2D-map with shots done and result.
+     * Returns a 2D-array with shots done and result.
      * Values are:
      *
      * Examples:
