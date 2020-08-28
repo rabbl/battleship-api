@@ -30,7 +30,7 @@
                     {% set number_count = loop.index0 %}
                     {% set targetViewValue = targetView[letter_count][number_count] %}
                     {% if targetViewValue is null %}
-                        <td onclick="$.ajax({
+                        <td style="cursor: pointer" onclick="$.ajax({
                                 url:'/{{ game.id }}/shot',
                                 type: 'POST',
                                 headers: {'Content-Type': 'application/json; charset=utf-8'},
@@ -79,12 +79,14 @@
                 {% for number in numbers %}
                     {% set number_count = loop.index0 %}
                     {% set oceanViewValue = oceanView[letter_count][number_count] %}
-                    {% if oceanViewValue[1] == 0 and oceanViewValue[1] == 0 %}
-                        <td>{{ oceanViewValue[0] }}</td>
+                    {% if oceanViewValue[0] == 0 and oceanViewValue[1] == 0 %}
+                        <td>---</td>
                     {% elseif oceanViewValue[0] == 0 and oceanViewValue[1] == 1 %}
                         <td bgcolor="gray">{{ oceanViewValue[0] }}</td>
                     {% elseif oceanViewValue[0] > 0 and oceanViewValue[1] == 1 %}
                         <td bgcolor="red">{{ oceanViewValue[0] }}</td>
+                    {% else %}
+                        <td>{{ oceanViewValue[0] }}</td>
                     {% endif %}
                 {% endfor %}
             </tr>
