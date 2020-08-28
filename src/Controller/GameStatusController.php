@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class GameStatusController extends AbstractQueryController
 {
     /**
-     * @Route("/{id}", methods={"GET"})
+     *
      * @param Request $request
      * @param string $id
      * @return Response
