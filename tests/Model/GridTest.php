@@ -15,9 +15,11 @@ use App\Model\Ship\Battleship;
 use App\Model\Ship\Carrier;
 use App\Model\Ship\Cruiser;
 use App\Model\Ship\Destroyer;
+use App\Model\Ship\PlacedShip;
 use App\Model\Ship\Ship;
 use App\Model\Ship\Submarine;
 use App\Model\ShotResult;
+use App\Model\ShotsCollection;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -34,9 +36,10 @@ class GridTest extends TestCase
         self::assertEquals(range(1, 10), Grid::numbers());
     }
 
+    /** @noinspection UnnecessaryAssertionInspection */
     public function testInstantiation(): void
     {
-        $grid = new Grid();
+        $grid = Grid::create();
         self::assertInstanceOf(Grid::class, $grid);
 
         $expectedGrid = array_fill(0, 10,
@@ -49,14 +52,15 @@ class GridTest extends TestCase
 
     public function testPlaceShipsHorizontally(): void
     {
-        $grid = new Grid();
-        $grid = $grid
-            ->placeShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::horizontal())
-            ->placeShip(new Battleship(), Hole::createFromLetterAndNumber('B', 1), Orientation::horizontal())
-            ->placeShip(new Cruiser(), Hole::createFromLetterAndNumber('C', 1), Orientation::horizontal())
-            ->placeShip(new Submarine(), Hole::createFromLetterAndNumber('D', 1), Orientation::horizontal())
-            ->placeShip(new Destroyer(), Hole::createFromLetterAndNumber('E', 1), Orientation::horizontal());
+        $placedShips = [
+            new PlacedShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::horizontal()),
+            new PlacedShip(new Battleship(), Hole::createFromLetterAndNumber('B', 1), Orientation::horizontal()),
+            new PlacedShip(new Cruiser(), Hole::createFromLetterAndNumber('C', 1), Orientation::horizontal()),
+            new PlacedShip(new Submarine(), Hole::createFromLetterAndNumber('D', 1), Orientation::horizontal()),
+            new PlacedShip(new Destroyer(), Hole::createFromLetterAndNumber('E', 1), Orientation::horizontal())
+        ];
 
+        $grid = Grid::replay($placedShips, ShotsCollection::create());
         self::assertEquals([
             [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
             [2, 2, 2, 2, 0, 0, 0, 0, 0, 0],
@@ -75,7 +79,7 @@ class GridTest extends TestCase
 
     public function testPlaceShipsVertically(): void
     {
-        $grid = new Grid();
+        $grid = Grid::create();
         $grid = $grid->placeShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::vertical());
         $grid = $grid->placeShip(new Battleship(), Hole::createFromLetterAndNumber('A', 2), Orientation::vertical());
         $grid = $grid->placeShip(new Cruiser(), Hole::createFromLetterAndNumber('A', 3), Orientation::vertical());
@@ -99,7 +103,7 @@ class GridTest extends TestCase
     public function testWhenSameShipPlacedTwiceItThrowsException(): void
     {
         $this->expectException(ShipTypeAlreadyPlacedException::class);
-        $grid = new Grid();
+        $grid = Grid::create();
         $grid = $grid->placeShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::horizontal());
         $grid->placeShip(new Carrier(), Hole::createFromLetterAndNumber('B', 2), Orientation::horizontal());
     }
@@ -129,7 +133,7 @@ class GridTest extends TestCase
     public function testPlacingShipsOutOfBoundsThrowsException(Hole $hole, Ship $ship, Orientation $orientation): void
     {
         $this->expectException(OutOfBoundsException::class);
-        (new Grid())->placeShip($ship, $hole, $orientation);
+        Grid::create()->placeShip($ship, $hole, $orientation);
     }
 
     /**
@@ -138,7 +142,7 @@ class GridTest extends TestCase
     public function testPlacingShipsOverlappingThrowsException(): void
     {
         $this->expectException(ShipOverlapsWithAnotherShipException::class);
-        (new Grid())
+        Grid::create()
             ->placeShip(new Carrier(), Hole::createFromLetterAndNumber('C', 3), Orientation::horizontal())
             ->placeShip(new Submarine(), Hole::createFromLetterAndNumber('C', 3), Orientation::vertical());
 
@@ -150,13 +154,13 @@ class GridTest extends TestCase
     public function testShootingBeforeSettingAllShipsThrowsException(): void
     {
         $this->expectException(AllShipsAreNotPlacedException::class);
-        (new Grid())
+        Grid::create()
             ->shot(Hole::createRandom());
     }
 
     public function testShootingReturnsHitTypeAndShipID(): void
     {
-        $grid = new Grid();
+        $grid = Grid::create();
         $grid = $grid
             ->placeShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::horizontal())
             ->placeShip(new Battleship(), Hole::createFromLetterAndNumber('B', 1), Orientation::horizontal())
@@ -177,7 +181,7 @@ class GridTest extends TestCase
 
     public function testMakeSinkAllShips(): void
     {
-        $grid = new Grid();
+        $grid = Grid::create();
         $grid = $grid
             ->placeShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::horizontal())
             ->placeShip(new Battleship(), Hole::createFromLetterAndNumber('B', 1), Orientation::horizontal())
@@ -213,5 +217,20 @@ class GridTest extends TestCase
         }
 
         self::assertTrue($grid->areAllShipsSunk());
+    }
+
+    public function testReplay(): void
+    {
+        $placedShips = [
+            new PlacedShip(new Carrier(), Hole::createFromLetterAndNumber('A', 1), Orientation::horizontal()),
+            new PlacedShip(new Battleship(), Hole::createFromLetterAndNumber('B', 1), Orientation::horizontal()),
+            new PlacedShip(new Cruiser(), Hole::createFromLetterAndNumber('C', 1), Orientation::horizontal()),
+            new PlacedShip(new Submarine(), Hole::createFromLetterAndNumber('D', 1), Orientation::horizontal()),
+            new PlacedShip(new Destroyer(), Hole::createFromLetterAndNumber('E', 1), Orientation::horizontal())
+        ];
+
+        $grid = Grid::replay($placedShips, ShotsCollection::create());
+        self::assertCount(5, $grid->placedShips());
+        self::assertEqualsCanonicalizing($placedShips, $grid->placedShips());
     }
 }

@@ -28,7 +28,7 @@ class RandomStrategy implements StrategyInterface
      */
     public static function createGridWithShips(): Grid
     {
-        $grid = new Grid();
+        $grid = Grid::create();
 
         $ships = [];
         $ships[] = new Carrier();

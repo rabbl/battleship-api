@@ -52,7 +52,29 @@ class Grid
         return $self;
     }
 
-    public function __construct()
+    public static function replay(array $placedShips, ShotsCollection $shotsCollection): Grid
+    {
+        $grid = new self();
+
+        /** @var PlacedShip $placedShip */
+        foreach ($placedShips as $placedShip) {
+            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
+        }
+
+        /** @var Shot $shot */
+        foreach ($shotsCollection->items() as $shot) {
+            $grid->shot($shot->hole());
+        }
+
+        return $grid;
+    }
+
+    public static function create(): Grid
+    {
+        return new self();
+    }
+
+    private function __construct()
     {
         $this->ships = [];
         $this->grid = [];

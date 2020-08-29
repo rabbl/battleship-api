@@ -78,16 +78,7 @@ class GameMaster
         $computer = $game->computer();
 
         /* Load the computers game board */
-        $grid = new Grid();
-        foreach ($computer->placedShips() as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
-
-        /* Place all shots from human */
-        foreach ($human->placedShots() as $placedShot) {
-            $grid->shot($placedShot->hole());
-        }
-
+        $grid = Grid::replay($computer->placedShips(), ShotsCollection::fromArray($human->placedShots()));
         $response = $grid->shot($shot->hole());
 
         $human->addPlacedShot($shot);
@@ -109,15 +100,7 @@ class GameMaster
         $computer = $game->computer();
 
         /* Load the computers game board */
-        $grid = new Grid();
-        foreach ($human->placedShips() as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
-
-        /* Place all shots from human */
-        foreach ($computer->placedShots() as $placedShot) {
-            $grid->shot($placedShot->hole());
-        }
+        $grid = Grid::replay($human->placedShips(), ShotsCollection::fromArray($computer->placedShots()));
 
         $strategy = $computer->strategy();
         $shots = ShotsCollection::fromArray([]);

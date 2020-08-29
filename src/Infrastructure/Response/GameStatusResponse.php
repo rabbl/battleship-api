@@ -7,6 +7,7 @@ namespace App\Infrastructure\Response;
 use App\Entity\Game;
 use App\Model\Grid;
 use App\Model\Hole;
+use App\Model\ShotsCollection;
 use JsonSerializable;
 
 class GameStatusResponse implements JsonSerializable
@@ -40,10 +41,7 @@ class GameStatusResponse implements JsonSerializable
         $human = $this->game->human();
         $computer = $this->game->computer();
 
-        $grid = new Grid();
-        foreach ($human->placedShips() as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
+        $grid = Grid::replay($human->placedShips(), ShotsCollection::create());
 
         $oceanView = [];
         foreach ($grid->grid() as $letter => $row) {
@@ -80,10 +78,7 @@ class GameStatusResponse implements JsonSerializable
         $human = $this->game->human();
         $computer = $this->game->computer();
 
-        $grid = new Grid();
-        foreach ($computer->placedShips() as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
+        $grid = Grid::replay($computer->placedShips(), ShotsCollection::create());
 
         $targetView = [];
         foreach (grid::letters() as $letter => $lValue) {
@@ -109,14 +104,7 @@ class GameStatusResponse implements JsonSerializable
         $computer = $this->game->computer();
         $message = '';
 
-        $grid = new Grid();
-        foreach ($computer->placedShips() as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
-
-        foreach ($human->placedShots() as $shot) {
-            $grid->shot($shot->hole());
-        }
+        $grid = Grid::replay($computer->placedShips(), ShotsCollection::fromArray($human->placedShots()));
 
         $humanScore = $grid->calculateOpponentsScore();
 
@@ -124,15 +112,7 @@ class GameStatusResponse implements JsonSerializable
             $message = sprintf("The winner is the human! Good game %s!", $human->name());
         }
 
-        $grid = new Grid();
-        foreach ($human->placedShips() as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
-
-        foreach ($computer->placedShots() as $shot) {
-            $grid->shot($shot->hole());
-        }
-
+        $grid = Grid::replay($human->placedShips(), ShotsCollection::fromArray($computer->placedShots()));
         $computerScore = $grid->calculateOpponentsScore();
 
         if ($grid->areAllShipsSunk()) {

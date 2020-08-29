@@ -8,6 +8,7 @@ use App\Entity\Game;
 use App\Model\Grid;
 use App\Model\Shot;
 use App\Model\ShotResult;
+use App\Model\ShotsCollection;
 use JsonSerializable;
 
 class ShotStatusResponse implements JsonSerializable
@@ -19,10 +20,7 @@ class ShotStatusResponse implements JsonSerializable
         $placedShips = $game->computer()->placedShips();
         $placedShots = $game->human()->placedShots();
 
-        $grid = new Grid();
-        foreach ($placedShips as $placedShip) {
-            $grid = $grid->placeShip($placedShip->ship(), $placedShip->hole(), $placedShip->orientation());
-        }
+        $grid = Grid::replay($placedShips, ShotsCollection::create());
 
         foreach ($placedShots as $placedShot) {
             $result = $grid->shot($placedShot->hole());
