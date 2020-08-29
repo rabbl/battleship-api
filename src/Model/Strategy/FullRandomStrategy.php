@@ -22,6 +22,12 @@ class FullRandomStrategy implements StrategyInterface
 {
     public const ID = 1;
 
+    /** @var Grid */
+    protected Grid $grid;
+
+    /** @var ShotsCollection */
+    protected ShotsCollection $previousShots;
+
     /**
      * This strategy creates random shots
      *
@@ -66,6 +72,24 @@ class FullRandomStrategy implements StrategyInterface
      */
     public static function shot(Grid $grid, ShotsCollection $previousShots): Shot
     {
-        return $grid->shot(Hole::createRandom());
+        return static::create($grid, $previousShots)->calculateShot();
+    }
+
+    protected static function create(Grid $grid, ShotsCollection $previousShots): self
+    {
+        $self = new self();
+        $self->grid = $grid;
+        $self->previousShots = $previousShots;
+
+        return $self;
+    }
+
+    /**
+     * @return Shot
+     * @throws Exception
+     */
+    public function calculateShot(): Shot
+    {
+        return new Shot(Hole::createRandom());
     }
 }

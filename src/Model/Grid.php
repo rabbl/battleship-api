@@ -196,6 +196,11 @@ class Grid
         return $this->grid;
     }
 
+    public function ships(): array
+    {
+        return $this->ships;
+    }
+
     /**
      * 1 Points for each hit
      * 2 Points for each sunk

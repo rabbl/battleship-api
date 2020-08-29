@@ -103,12 +103,9 @@ class GameMaster
         $grid = Grid::replay($human->placedShips(), ShotsCollection::fromArray($computer->placedShots()));
 
         $strategy = $computer->strategy();
-        $shots = ShotsCollection::fromArray([]);
-        foreach ($computer->placedShots() as $shot) {
-            $shots->add($shot);
-        }
-
+        $shots = ShotsCollection::fromArray($computer->placedShots());
         $shot = $strategy::shot($grid, $shots);
+
         $response = $grid->shot($shot->hole());
 
         $computer->addPlacedShot($shot);

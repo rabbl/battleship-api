@@ -14,10 +14,10 @@ use Exception;
 class Hole
 {
     /** @var string */
-    private $letter;
+    private string $letter;
 
     /** @var int */
-    private $number;
+    private int $number;
 
     public static function createFromLetterAndNumber(string $letter, int $number): Hole
     {
@@ -26,10 +26,21 @@ class Hole
         }
 
         if ($number > Grid::END_NUMBER || $number < Grid::START_NUMBER) {
-            throw new InvalidHoleArgumentException(sprintf('A number in between %s and %s is expected. %s given', Grid::START_NUMBER, Grid::END_NUMBER, $number));
+            throw new InvalidHoleArgumentException(sprintf('A number in between %s and %s is expected. %s given.', Grid::START_NUMBER, Grid::END_NUMBER, $number));
         }
 
         return new self($letter, $number);
+    }
+
+    public static function isValid(string $letter, int $number): bool
+    {
+        try {
+            self::createFromLetterAndNumber($letter, $number);
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     public static function createFromArray(array $arr): Hole

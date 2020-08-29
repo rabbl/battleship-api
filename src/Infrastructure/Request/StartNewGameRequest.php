@@ -22,7 +22,7 @@ class StartNewGameRequest
     {
         $id = Uuid::fromString($content['id']);
         $name = $content['name'];
-        $strategyId = $content['strategy'] ? (int)$content['strategy'] : 1;
+        $strategyId = isset($content['strategy']) ? (int)$content['strategy'] : 1;
 
         $placedShips = [];
         if (isset($content['ships']) && is_array($content['ships'])) {
