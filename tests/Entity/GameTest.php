@@ -3,7 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Game;
-use App\Model\Strategy\RandomStrategy;
+use App\Model\Strategy\FullRandomStrategy;
 use App\Model\Player\Player;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -35,11 +35,11 @@ class GameTest extends KernelTestCase
         $id = Uuid::uuid4();
         $human = new Player(
             'Player_1',
-            (RandomStrategy::createGridWithShips())->placedShips()
+            (FullRandomStrategy::createGridWithShips())->placedShips()
         );
         $computer = new Player(
             'Player_2',
-            (RandomStrategy::createGridWithShips())->placedShips()
+            (FullRandomStrategy::createGridWithShips())->placedShips()
         );
 
         $game = Game::createNew($id, $human, $computer);
@@ -61,11 +61,11 @@ class GameTest extends KernelTestCase
         $id = Uuid::uuid4();
         $human = new Player(
             'Player_1',
-            (RandomStrategy::createGridWithShips())->placedShips()
+            (FullRandomStrategy::createGridWithShips())->placedShips()
         );
         $computer = new Player(
             'Player_2',
-            (RandomStrategy::createGridWithShips())->placedShips()
+            (FullRandomStrategy::createGridWithShips())->placedShips()
         );
 
         $game = Game::createNew($id, $human, $computer);

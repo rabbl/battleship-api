@@ -33,7 +33,7 @@ class Player
             $placedShips[] = PlacedShip::fromArray($placedShip);
         }
 
-        $strategyId = $arr['strategy'] ?? 1;
+        $strategyId = $arr['strategyId'] ?? 1;
 
         $placedShots = [];
         foreach ($arr['placedShots'] as $shot) {

@@ -3,7 +3,7 @@
 namespace App\Tests\Model\Player;
 
 use App\Model\Hole;
-use App\Model\Strategy\RandomStrategy;
+use App\Model\Strategy\FullRandomStrategy;
 use App\Model\Player\Player;
 use App\Model\Shot;
 use Exception;
@@ -18,7 +18,7 @@ class PlayerTest extends TestCase
     public function testInstantiation(): void
     {
         $name = 'Player_1';
-        $placedShips = (RandomStrategy::createGridWithShips())->placedShips();
+        $placedShips = (FullRandomStrategy::createGridWithShips())->placedShips();
         $shots = [
             new Shot(Hole::createRandom()),
             new Shot(Hole::createRandom()),
@@ -49,7 +49,7 @@ class PlayerTest extends TestCase
     public function testFromArrayToArray(): void
     {
         $name = 'Player_1';
-        $placedShips = (RandomStrategy::createGridWithShips())->placedShips();
+        $placedShips = (FullRandomStrategy::createGridWithShips())->placedShips();
         $shots = [
             new Shot(Hole::createRandom()),
             new Shot(Hole::createRandom()),

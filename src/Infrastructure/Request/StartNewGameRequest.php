@@ -22,8 +22,7 @@ class StartNewGameRequest
     {
         $id = Uuid::fromString($content['id']);
         $name = $content['name'];
-        $strategyId = $content['strategy'] ?? 1;
-        $strategy = StrategyFactory::build($strategyId);
+        $strategyId = $content['strategy'] ? (int)$content['strategy'] : 1;
 
         $placedShips = [];
         if (isset($content['ships']) && is_array($content['ships'])) {
@@ -33,7 +32,7 @@ class StartNewGameRequest
         }
 
         if (count($placedShips) === 0) {
-            $placedShips = $strategy::createGridWithShips()->placedShips();
+            $placedShips = StrategyFactory::build($strategyId)::createGridWithShips()->placedShips();
         }
 
         return new self($id, $name, $strategyId, $placedShips);

@@ -4,59 +4,20 @@ declare(strict_types=1);
 
 namespace App\Model\Strategy;
 
-use App\Exception\OutOfBoundsException;
-use App\Exception\ShipOverlapsWithAnotherShipException;
 use App\Model\ShotsCollection;
 use App\Model\Grid;
 use App\Model\Hole;
-use App\Model\Orientation;
-use App\Model\Ship\Battleship;
-use App\Model\Ship\Carrier;
-use App\Model\Ship\Cruiser;
-use App\Model\Ship\Destroyer;
-use App\Model\Ship\Submarine;
 use App\Model\Shot;
 use Exception;
 
-class RandomStrategy implements StrategyInterface
+class RandomStrategy extends FullRandomStrategy
 {
-    public const ID = 1;
+    public const ID = 2;
 
     /**
-     * @return Grid
-     * @throws Exception
-     */
-    public static function createGridWithShips(): Grid
-    {
-        $grid = Grid::create();
-
-        $ships = [];
-        $ships[] = new Carrier();
-        $ships[] = new Battleship();
-        $ships[] = new Cruiser();
-        $ships[] = new Submarine();
-        $ships[] = new Destroyer();
-
-        foreach ($ships as $ship) {
-            $attempts = 0;
-            do {
-                try {
-                    $grid = $grid->placeShip($ship, Hole::createRandom(), Orientation::createRandom());
-                    break;
-                } catch (OutOfBoundsException $e) {
-                    $attempts++;
-                    continue;
-                } catch (ShipOverlapsWithAnotherShipException $e) {
-                    $attempts++;
-                    continue;
-                }
-            } while ($attempts < 10);
-        }
-
-        return $grid;
-    }
-
-    /**
+     * This strategy creates random shots
+     * but never throws twice to the same location
+     *
      * @param Grid $grid
      * @param ShotsCollection $previousShots
      * @return Shot
@@ -64,6 +25,26 @@ class RandomStrategy implements StrategyInterface
      */
     public static function shot(Grid $grid, ShotsCollection $previousShots): Shot
     {
-        return $grid->shot(Hole::createRandom());
+        $holesWithoutShot = [];
+        foreach (Grid::letters() as $letter) {
+            foreach (Grid::numbers() as $number) {
+                $hole = Hole::createFromLetterAndNumber($letter, $number);
+                $holeAlreadyShot = false;
+                /** @var Shot $previousShot */
+                foreach ($previousShots->items() as $previousShot) {
+                    if ($previousShot->hole()->equals($hole)) {
+                        $holeAlreadyShot = true;
+                    }
+                }
+
+                if ($holeAlreadyShot === false) {
+                    $holesWithoutShot[] = $hole;
+                }
+            }
+        }
+
+        $randomHole = $holesWithoutShot[array_rand($holesWithoutShot, 1)];
+
+        return $grid->shot($randomHole);
     }
 }

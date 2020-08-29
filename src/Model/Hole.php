@@ -84,4 +84,9 @@ class Hole
     {
         return [$this->letter(), $this->number()];
     }
+
+    public function equals(Hole $other): bool
+    {
+        return $this->number() === $other->number() && $this->letter() === $other->letter();
+    }
 }

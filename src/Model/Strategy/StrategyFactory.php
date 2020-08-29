@@ -8,6 +8,10 @@ class StrategyFactory
 {
     public static function build($id): StrategyInterface
     {
-        return new RandomStrategy();
+        if ($id === 2) {
+            return new RandomStrategy();
+        }
+
+        return new FullRandomStrategy();
     }
 }
