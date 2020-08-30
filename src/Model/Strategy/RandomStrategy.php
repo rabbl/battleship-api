@@ -8,6 +8,13 @@ use App\Model\Grid;
 use App\Model\Hole;
 use App\Model\Shot;
 
+/**
+ * Creates a grid with random ships
+ * Calculates a unique random shot which is not shot already
+ *
+ * Class RandomStrategy
+ * @package App\Model\Strategy
+ */
 class RandomStrategy extends FullRandomStrategy
 {
     public const ID = 2;
@@ -30,18 +37,5 @@ class RandomStrategy extends FullRandomStrategy
         }
 
         return new Shot($holesWithoutShot[array_rand($holesWithoutShot, 1)]);
-    }
-
-    protected function isHoleAlreadyShot(Hole $hole): bool
-    {
-        $holeAlreadyShot = false;
-        /** @var Shot $previousShot */
-        foreach ($this->previousShots->items() as $previousShot) {
-            if ($previousShot->hole()->equals($hole)) {
-                $holeAlreadyShot = true;
-            }
-        }
-
-        return $holeAlreadyShot;
     }
 }

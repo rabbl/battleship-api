@@ -13,7 +13,7 @@ use JsonSerializable;
 
 class ShotStatusResponse implements JsonSerializable
 {
-    private $result;
+    private ShotResult $result;
 
     public function __construct(Game $game, Shot $shot)
     {

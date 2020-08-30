@@ -18,29 +18,29 @@ class Game
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      */
-    private $id;
+    private UuidInterface $id;
 
     /**
      * @var array
      * @ORM\Column(type="array")
      */
-    private $human;
+    private array $human;
 
     /**
      * @var array
      * @ORM\Column(type="array")
      */
-    private $computer;
+    private array $computer;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
 
     public static function createNew(UuidInterface $id, Player $human, Player $computer): Game
     {

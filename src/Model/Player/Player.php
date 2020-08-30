@@ -13,16 +13,16 @@ use App\Model\Shot;
 class Player
 {
     /** @var string */
-    private $name;
+    private string $name;
 
     /** @var PlacedShip[] */
-    private $placedShips;
+    private array $placedShips;
 
     /** @var Shot[] */
-    private $placedShots;
+    private array $placedShots;
 
     /** @var int */
-    private $strategyId;
+    private int $strategyId;
 
     public static function fromArray(array $arr): Player
     {

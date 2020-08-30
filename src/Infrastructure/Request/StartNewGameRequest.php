@@ -13,10 +13,10 @@ use Ramsey\Uuid\UuidInterface;
 class StartNewGameRequest
 {
 
-    private $id;
-    private $name;
-    private $strategyId;
-    private $placedShips;
+    private UuidInterface $id;
+    private string $name;
+    private int $strategyId;
+    private array $placedShips;
 
     public static function fromValidatedContent(array $content): StartNewGameRequest
     {

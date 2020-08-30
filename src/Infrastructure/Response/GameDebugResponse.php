@@ -11,7 +11,7 @@ use JsonSerializable;
 
 class GameDebugResponse implements JsonSerializable
 {
-    private $game;
+    private Game $game;
 
     public function __construct(Game $game)
     {

@@ -6,7 +6,7 @@ namespace App\Model;
 
 class Shot
 {
-    protected $hole;
+    protected Hole $hole;
 
     public static function fromArray($arr): Shot
     {

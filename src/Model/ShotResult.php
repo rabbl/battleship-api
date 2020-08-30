@@ -8,9 +8,9 @@ use JsonSerializable;
 
 class ShotResult extends Shot implements JsonSerializable
 {
-    protected $hole;
-    private $result;
-    private $shipId;
+    protected Hole $hole;
+    private int $result;
+    private int $shipId;
 
     public function __construct(Hole $hole, int $result, int $shipId = 0)
     {

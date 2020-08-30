@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractCommandController extends AbstractController
 {
     /** @var GameMaster $gameMaster */
-    protected $gameMaster;
+    protected GameMaster $gameMaster;
 
     public function __construct(GameMaster $gameMaster)
     {

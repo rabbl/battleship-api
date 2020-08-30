@@ -12,7 +12,7 @@ use JsonSerializable;
 
 class GameStatusResponse implements JsonSerializable
 {
-    private $game;
+    private Game $game;
 
     public function __construct(Game $game)
     {

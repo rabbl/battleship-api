@@ -10,8 +10,8 @@ use App\Model\Shot;
 class PlaceShotRequest
 {
 
-    private $letter;
-    private $number;
+    private string $letter;
+    private int $number;
 
     public static function fromValidatedContent(array $content): PlaceShotRequest
     {

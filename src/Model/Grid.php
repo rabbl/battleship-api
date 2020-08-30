@@ -31,8 +31,8 @@ class Grid
     public const HIT = 1;
     public const SUNK = 2;
 
-    private $grid;
-    private $ships;
+    private array $grid;
+    private array $ships;
 
     public static function letters(): array
     {

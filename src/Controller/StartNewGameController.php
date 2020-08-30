@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Infrastructure\Request\StartNewGameRequest;
 use Exception;
+use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ final class StartNewGameController extends AbstractCommandController
      * @param Request $request
      * @Route("/", methods={"POST"})
      * @return Response
+     * @throws JsonException
      */
     public function startNewGame(Request $request): Response
     {
@@ -26,7 +28,7 @@ final class StartNewGameController extends AbstractCommandController
             return new JsonResponse(['message' => $e->getMessage()], 322);
         }
 
-        $content = json_decode($request->getContent(), true);
+        $content = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $startNewGameRequest = StartNewGameRequest::fromValidatedContent($content);
 
         if ($this->gameMaster->gameIdExists($startNewGameRequest->id())) {

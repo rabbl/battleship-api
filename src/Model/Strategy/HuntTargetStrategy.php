@@ -12,6 +12,17 @@ use App\Model\Shot;
 use App\Model\ShotsCollection;
 use Exception;
 
+/**
+ * Creates a grid with random ships
+ * Calculates a:
+ *      unique random shot with parity (in hunting mode)
+ *      shot next to a field of a hit ship with parity (in target mode)
+ *
+ * Algorithm based on: http://www.datagenetics.com/blog/december32011/
+ *
+ * Class HuntTargetStrategy
+ * @package App\Model\Strategy
+ */
 class HuntTargetStrategy extends RandomStrategy
 {
     public const ID = 3;
@@ -58,11 +69,8 @@ class HuntTargetStrategy extends RandomStrategy
         }
 
         foreach ($this->shotResults as $shotResult) {
-            if (($shotResult->shipId() > 0)) {
-                if ($ships[$shotResult->shipId()] !== Grid::SUNK) {
-                    $ships[$shotResult->shipId()] = $shotResult->result();
-
-                }
+            if (($shotResult->shipId() > 0) && $ships[$shotResult->shipId()] !== Grid::SUNK) {
+                $ships[$shotResult->shipId()] = $shotResult->result();
             }
         }
 
@@ -83,10 +91,27 @@ class HuntTargetStrategy extends RandomStrategy
         }
 
         if ($this->calculateMode() === self::HUNT_MODE) {
-            return $this->calculateUniqueRandomShot();
+            return $this->calculateUniqueRandomShotWithParity();
         }
 
         return $this->calculateTargetShot();
+    }
+
+    protected function calculateUniqueRandomShotWithParity(): Shot
+    {
+        $holesWithoutShot = [];
+        foreach (Grid::letters() as $lKey => $letter) {
+            foreach (Grid::numbers() as $nKey => $number) {
+                if (($lKey % 2 === 0 && $nKey % 2 === 0) || ($lKey % 2 === 1 && $nKey % 2 === 1)) {
+                    $hole = Hole::createFromLetterAndNumber($letter, $number);
+                    if ($this->isHoleAlreadyShot($hole) === false) {
+                        $holesWithoutShot[] = $hole;
+                    }
+                }
+            }
+        }
+
+        return new Shot($holesWithoutShot[array_rand($holesWithoutShot, 1)]);
     }
 
     protected function calculateTargetShot(): Shot

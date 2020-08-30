@@ -13,7 +13,7 @@ class Orientation
     private const HORIZONTAL = 0;
     private const VERTICAL = 1;
 
-    private $orientation;
+    private int $orientation;
 
     public static function horizontal(): Orientation
     {

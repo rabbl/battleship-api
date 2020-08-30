@@ -10,9 +10,9 @@ use JsonSerializable;
 
 class PlacedShip implements ShipInterface, JsonSerializable
 {
-    private $ship;
-    private $hole;
-    private $orientation;
+    private Ship $ship;
+    private Hole $hole;
+    private Orientation $orientation;
 
     public static function fromArray($arr): PlacedShip
     {

@@ -6,7 +6,7 @@ namespace App\Model;
 
 class ShotsCollection
 {
-    private $items;
+    private array $items;
 
     public static function create(): ShotsCollection
     {
