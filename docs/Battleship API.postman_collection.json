@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "158314e9-4e47-4ca9-a6c4-88de62388427",
+		"name": "Battleship API",
+		"description": "Delete the game if it exists.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete the game if it exists.",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da"
+					]
+				},
+				"description": "Delete the game if it exists."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new Game with ships",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"d396888b-7cfc-4b10-b31e-499ddf3aef89\",\n    \"name\": \"Player 1\",\n    \"ships\": [\n    \t{\"id\": 1, \"hole\": {\"letter\": \"A\", \"number\": 1}, \"orientation\": 0},\n    \t{\"id\": 2, \"hole\": {\"letter\": \"B\", \"number\": 1}, \"orientation\": 0},\n    \t{\"id\": 3, \"hole\": {\"letter\": \"C\", \"number\": 1}, \"orientation\": 0},\n    \t{\"id\": 4, \"hole\": {\"letter\": \"D\", \"number\": 1}, \"orientation\": 0},\n    \t{\"id\": 5, \"hole\": {\"letter\": \"E\", \"number\": 1}, \"orientation\": 0}\n    ],\n    \"strategy\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get game status (HTML)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete the game if it exists. Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da"
+					]
+				},
+				"description": "Delete the game if it exists."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new Game with automatic ship ubication.",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"dce6bc9f-9c5d-4e99-8795-f7db8017a8da\",\n    \"name\": \"Player 1\",\n    \"strategy\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000"
+				},
+				"description": "Create a new game with automatic ship ubication"
+			},
+			"response": []
+		},
+		{
+			"name": "Make a shot",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"letter\": \"A\",\n    \"number\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+						"shot"
+					]
+				},
+				"description": "Make a shot to location A1"
+			},
+			"response": []
+		},
+		{
+			"name": "Get shot results",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da/shot/A/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+						"shot",
+						"A",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get game status (JSON)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get game status (HTML)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/dce6bc9f-9c5d-4e99-8795-f7db8017a8da",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"dce6bc9f-9c5d-4e99-8795-f7db8017a8da"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

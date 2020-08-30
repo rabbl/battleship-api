@@ -27,7 +27,7 @@ class StartNewGameRequest
         $placedShips = [];
         if (isset($content['ships']) && is_array($content['ships'])) {
             foreach ($content['ships'] as $shipArr) {
-                $placedShips[] = PlacedShip::fromArray($shipArr);
+                $placedShips[] = PlacedShip::fromRequest($shipArr);
             }
         }
 

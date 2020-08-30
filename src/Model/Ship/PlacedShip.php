@@ -14,6 +14,15 @@ class PlacedShip implements ShipInterface, JsonSerializable
     private Hole $hole;
     private Orientation $orientation;
 
+    public static function fromRequest($arr): PlacedShip
+    {
+        $ship = ShipFactory::build($arr['id']);
+        $hole = Hole::createFromLetterAndNumber($arr['hole']['letter'], $arr['hole']['number']);
+        $orientation = Orientation::fromInt($arr['orientation']);
+
+        return new self($ship, $hole, $orientation);
+    }
+
     public static function fromArray($arr): PlacedShip
     {
         $ship = ShipFactory::build($arr['id']);

@@ -30,6 +30,9 @@
                 "maximum": 10
               }
             }
+          },
+          "orientation": {
+            "type": "integer"
           }
         }
       },
